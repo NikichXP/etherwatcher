@@ -4,6 +4,7 @@ import com.nikichxp.util.Locks
 import kotlinx.coroutines.*
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Repository
+import org.springframework.stereotype.Service
 import org.web3j.protocol.core.DefaultBlockParameter
 import org.web3j.protocol.core.methods.response.EthBlock
 import org.web3j.protocol.core.methods.response.Transaction
@@ -14,8 +15,9 @@ import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 import java.util.logging.Logger
+import javax.annotation.PostConstruct
 
-@Repository
+@Service
 class EtherBlockExplorer(
         private val etherConfig: EtherConfig,
         private val etherOperations: EtherOperations,
@@ -38,7 +40,7 @@ class EtherBlockExplorer(
         }
     }
 
-    @Scheduled(fixedDelay = 30_000L)
+    @Scheduled(fixedDelay = 30_000L, initialDelay = 0L)
     fun autoUpdate() {
         if (etherExploreBlock.get()) {
             return
